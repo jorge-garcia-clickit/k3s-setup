@@ -1,0 +1,14 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-app-ingress
+spec:
+  rules:
+  - host: k3s-test.com
+    http: 
+      paths:
+      - path: /
+        backend:
+          serviceName: nginx-service
+          servicePort: 80

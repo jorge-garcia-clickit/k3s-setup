@@ -1,0 +1,8 @@
+terraform/terraform.tfvars
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/.terraform.lock.hcl
+terraform/.terraform/
+
+ansible/inventory/my-cluster/hosts.ini
+ansible/inventory/my-cluster/group_vars/all.yml 
