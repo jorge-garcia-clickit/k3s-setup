@@ -9,7 +9,12 @@ create_cluster() {
         ansible-playbook site.yml -i inventory/my-cluster/hosts.ini
         sed
         cd ../terraform
-        sed -i -e "s@server: https://.*:6443@server: https://$( terraform output -raw k3s_cluster_ip ):6443@" ~/.kube/config #replace private ip to public ip in local kube config file 
+        export tempvar=$( grep path_to_download_kube_config terraform.tfvars | cut -d\" -f2 )
+        [[ -z "$tempvar" ]] && export tempvar="$HOME/.kube/config"
+        sed -i -e "s@server: https://.*:6443@server: https://$( terraform output -raw k3s_cluster_ip ):6443@" $tempvar #replace private ip to public ip in local kube config file 
+        echo -e "\033[0;32mCLUSTER CREATED CORRECTLY"
+        echo "Kube Config file saved to $tempvar"
+        echo "K3s Cluster IP is $( terraform output -raw k3s_cluster_ip )"
 }
 
 delete_cluster() {
@@ -18,7 +23,7 @@ delete_cluster() {
 }
 
 deploy_manifiests() {
-        find ../k3s -name "*.yml" -exec kubectl apply -f {} \;
+        find k3s -name "*.yml" -exec kubectl apply -f {} \;
 }
 
 configure_tfvars() {
