@@ -18,4 +18,3 @@ spec:
         image: nginx:1.16.1 # Update the version of nginx from 1.14.2 to 1.16.1
         ports:
         - containerPort: 80
----

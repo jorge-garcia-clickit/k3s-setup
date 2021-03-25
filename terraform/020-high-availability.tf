@@ -13,18 +13,21 @@ resource "random_string" "db_user" {
 	count = var.number_of_master_servers != 1 ? 1 : 0
   length           = 16
   special          = false
+  number           = false
 }
 
 resource "random_string" "db_pass" {
 	count = var.number_of_master_servers != 1 ? 1 : 0
   length           = 16
   special          = false
+  number           = false
 }
 
 resource "random_string" "db_name" {
 	count = var.number_of_master_servers != 1 ? 1 : 0
   length           = 16
   special          = false
+  number           = false
 }
 
 resource "aws_db_instance" "k3s_datastore_endpoint" {

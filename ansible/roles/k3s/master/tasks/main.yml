@@ -8,12 +8,17 @@
     group: root
     mode: 0644
 
+- name: Wait for service file
+  wait_for:
+    path: "{{ systemd_dir }}/k3s.service"
+
 - name: Enable and check K3s service
   systemd:
     name: k3s
     daemon_reload: yes
     state: restarted
     enabled: yes
+  ignore_errors: yes
 
 - name: Wait for node-token
   wait_for:
