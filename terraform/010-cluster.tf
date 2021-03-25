@@ -15,12 +15,13 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "k3s-master" {
+	count = var.number_of_master_servers
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.master_instance_type
   key_name      = var.key_name
 
   tags = {
-    Name = "${var.cluster_name}-master"
+    Name = "${var.cluster_name}-master-${count.index}"
   }
 }
 
@@ -33,32 +34,5 @@ resource "aws_instance" "k3s-nodes" {
   tags = {
     Name = "${var.cluster_name}-node-${count.index}"
   }
-}
-
-resource "local_file" "ansible-inventory" {
-  content = templatefile("ansible-inventory.tmpl",
-    {
-      master-dns = aws_instance.k3s-master.public_dns,
-      master-ip = aws_instance.k3s-master.public_ip,
-      master-id = aws_instance.k3s-master.id,
-      node-dns = aws_instance.k3s-nodes.*.public_dns,
-      node-ip = aws_instance.k3s-nodes.*.public_ip,
-      node-id = aws_instance.k3s-nodes.*.id
-    }
-  )
- filename = "../ansible/inventory/my-cluster/hosts.ini"
-}
-
-resource "local_file" "ansible-vars" {
-  content = templatefile("ansible-vars.tmpl",
-    {
-      ansible_user = var.ansible_user,
-      ansible_ssh_private_key_file = var.ansible_ssh_private_key_file,
-      k3s_version = var.k3s_version,
-      extra_server_args = var.extra_server_args,
-      extra_agent_args = var.extra_agent_args
-    }
-  )
- filename = "../ansible/inventory/my-cluster/group_vars/all.yml"
 }
 

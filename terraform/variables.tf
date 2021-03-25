@@ -19,7 +19,7 @@ variable cluster_name {
 variable number_of_nodes {
     type = number 
     description = "Number of EC2 instances to be created as K3s Agent Nodes, this is additional to the One K3s Master node"
-    default = 3
+    default = 2
 }
 
 variable key_name {
@@ -67,4 +67,10 @@ variable extra_agent_args {
     type = string
     description = "Additional arguments required to start k3s on the node servers"
     default = "\"\""
+}
+
+variable number_of_master_servers {
+    type = number
+    description = "Number of desired master nodes for a high availability k3s cluster, setting this value to a number greater than 1 will aditionally create a haproxy server and a rds mysql server"
+    default = 1
 }

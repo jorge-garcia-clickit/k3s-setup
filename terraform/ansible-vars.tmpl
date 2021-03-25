@@ -3,6 +3,12 @@ ansible_user: ${ansible_user}
 ansible_ssh_private_key_file: ${ansible_ssh_private_key_file}
 k3s_version: ${k3s_version}
 systemd_dir: /etc/systemd/system
-master_ip: "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}"
+master_ip: ${master_ip}
 extra_server_args: ${extra_server_args}
 extra_agent_args: ${extra_agent_args}
+
+k3s_backend_servers: 
+%{ for index, ip in server_ips ~}
+  - name: ${server_names[index]}
+    address: ${ip}
+%{ endfor ~}

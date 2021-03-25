@@ -1,9 +1,16 @@
 [master]
-${master-dns} ansible_host=${master-ip} # ${master-id}
+%{ for index, dns in master-dns ~}
+${dns} ansible_host=${master-ip[index]} # ${master-id[index]}
+%{ endfor ~}
 
 [nodes]
 %{ for index, dns in node-dns ~}
 ${dns} ansible_host=${node-ip[index]} # ${node-id[index]}
+%{ endfor ~}
+
+[haproxy]
+%{ for index, dns in haproxy-dns ~}
+${dns} ansible_host=${haproxy-ip[index]} # ${haproxy-id[index]}
 %{ endfor ~}
 
 [k3s_cluster:children]

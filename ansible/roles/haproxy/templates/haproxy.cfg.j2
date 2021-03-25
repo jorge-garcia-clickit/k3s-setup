@@ -17,7 +17,6 @@ global
 defaults
   log global
   mode  http
-  option  httplog
   option  dontlognull
 {% if haproxy_version == '1.4' %}
         contimeout 5000
@@ -54,3 +53,19 @@ backend {{ haproxy_backend_name }}
 {% for backend in haproxy_backend_servers %}
     server {{ backend.name }} {{ backend.address }} cookie {{ backend.name }} check
 {% endfor %}
+
+listen kubernetes-apiserver-https
+  bind {{ master_ip }}:6443
+  mode tcp
+  option log-health-checks
+{% if haproxy_version == '1.4' %}
+  clitimeout 3h
+  srvtimeout 3h
+{% else %}
+  timeout client 3h
+  timeout server 3h
+{% endif %}
+{% for server in k3s_backend_servers %}
+  server {{ server.name }} {{ server.address }}:6443
+{% endfor %}
+  balance roundrobin
