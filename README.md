@@ -1,8 +1,13 @@
-#!/bin/bash
-source bin/functions.sh
-##Global Variables 
-usage() {
-        echo "
+## To run properly this tool requires the following:
+* Terraform v0.14.6 or greater
+* ansible 2.10.7
+* An AWS cli profile already configured
+
+
+
+## Usage Page 
+
+```sh
 NAME
        k3s-setup -
 
@@ -31,35 +36,22 @@ COMMANDS AVAILABLE
                 02-ingress.yml
         usage -h --help 
                 Prints this message.
-"
-}
+```
 
+## Usage Examples
 
+```
+./main.sh create
+```
 
-##########################################################Main script###################################################################
-#check if subcommand exists, then go to subcommand function, else print usage information and exit with error code 1
+```
+./main.sh delete
+```
 
-case $1 in
-
-create )
-                        create_cluster
-                        ;;
-delete )
-                        delete_cluster
-                        ;;
-deploy )
-                        deploy_manifiests
-                        ;;
-configure )
-                        configure_tfvars
-                        ;;
--h | --help | usage )
-                        usage
-                        ;;
-* )
-                        echo "Error: Invalid option"
-                        usage
-                        exit 1
-        esac
-        shift
+```
+./main.sh deploy
+```
+```
+./main.sh usage
+```
 
