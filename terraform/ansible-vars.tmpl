@@ -6,7 +6,7 @@ systemd_dir: /etc/systemd/system
 master_ip: ${master_ip}
 extra_server_args: ${extra_server_args}
 extra_agent_args: ${extra_agent_args}
-
+path_to_download_kube_config: ${path_to_download_kube_config}
 k3s_backend_servers: 
 %{ for index, ip in server_ips ~}
   - name: ${server_names[index]}

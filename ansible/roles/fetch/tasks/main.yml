@@ -1,0 +1,5 @@
+- name: Fetch kube config file
+  ansible.builtin.fetch:
+    src: "~{{ ansible_user }}/.kube/config"
+    dest: "{{ path_to_download_kube_config }}"
+    flat: yes

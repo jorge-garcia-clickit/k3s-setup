@@ -74,3 +74,9 @@ variable number_of_master_servers {
     description = "Number of desired master nodes for a high availability k3s cluster, setting this value to a number greater than 1 will aditionally create a haproxy server and a rds mysql server"
     default = 1
 }
+
+variable path_to_download_kube_config {
+    type = string
+    description = "Path for .kube/config to be saved"
+    default = "~/.kube/config"
+}
